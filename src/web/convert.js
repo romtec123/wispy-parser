@@ -17,9 +17,13 @@ async function view(req, config) {
                 if(lines[0] && lines[0].replace(/ /gi, "") == null) lines.shift();
     
                 let response = {}
-                response.mac = lines[0].split("Address: ")[1] ?? null
-                response.ssid = lines[1].split("ESSID:")[1] ? lines[1].split("ESSID:")[1].replace(/"/gi, "") : ""
-                response.freq = lines[2].split("Frequency:")[1] ?? null
+                lines.forEach(line => {
+                    if(line.includes('- Address: ')) response.mac = line.split("Address: ")[1] ?? null
+                    if(line.includes('ESSID:')) response.ssid = line.split("ESSID:")[1] ? line.split("ESSID:")[1].replace(/"/gi, "") : "" ?? null
+                    if(line.includes('Quality=')) response.strength = line.startsWith(',') ? line.slice(1) : line ?? null
+                    if(line.includes('Frequency:'))  response.freq = lines[2].split("Frequency:")[1] ?? null
+                });
+
                 if(!response.mac) return
     
                 if(!apData.aps[response.mac]) {
