@@ -63,6 +63,7 @@ async function initMap() {
   map = new Map(document.getElementById("map"), {
     center: { lat: 38.297804, lng: -122.286865 },
     zoom: 12,
+    mapTypeId: 'terrain',
   });
   const infoWindow = new google.maps.InfoWindow();
 
@@ -74,6 +75,7 @@ async function initMap() {
       position: {lat, lng},
       map,
       title: scan.scanInfo,
+      icon: "https://media.discordapp.net/attachments/756780899659546695/1112591260029558844/wifi.png?width=32&height=32",
       optimized: true,
     });
 
